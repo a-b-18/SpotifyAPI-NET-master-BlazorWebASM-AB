@@ -202,13 +202,13 @@
       "System.Private.CoreLib.dll": "sha256-CvQTDivHJZAtRXyCbDa5f5+okJt39WRFrZSmXTMSau0=",
       "SpotifyAPI.Web.Auth.dll": "sha256-\/g\/m1xCe\/XOe\/k+dGhFuiZGR5gMbPo\/H5NDNqcTjygI=",
       "SpotifyAPI.Web.dll": "sha256-O6NfkJYho24yMVIkQT\/DIIa6T9Imn2LzNc2Hvq6fHUo=",
-      "Example.BlazorWASM.dll": "sha256-nrUpYCg3M4hiZwL3sgVsobNEiCJCHwTDt1HyF9bFMrw="
+      "Example.BlazorWASM.dll": "sha256-POOl4OKiGy+3p5ItB+xlIbwUnYzw9xU4dKBZjDHGYWs="
     },
     "lazyAssembly": null,
     "pdb": {
       "SpotifyAPI.Web.Auth.pdb": "sha256-grLUMFJE3Ilmf3CP+qwRW0G7QmuV97OazswNXTMcEUk=",
       "SpotifyAPI.Web.pdb": "sha256-HLyxgPzhJKM67x6Qkm8juHYJkjNv97YubeAqeDbm+2A=",
-      "Example.BlazorWASM.pdb": "sha256-6Tokrhqy+c3WXfXd3YUVt2Av1zLpdoFG7mSmg8i8xLI="
+      "Example.BlazorWASM.pdb": "sha256-xdEGE9MyW34RAMe9kpxb4a8xKTEYreoDinbx9XeLS1k="
     },
     "runtime": {
       "dotnet.timezones.blat": "sha256-2OdnPsDgJyoSaSlvebGMRd2MxC+4UIqparqVrQZAFDE=",

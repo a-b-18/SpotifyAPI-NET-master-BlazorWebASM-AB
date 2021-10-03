@@ -19,6 +19,13 @@
   <p>
     You have a grant total of @_totalPlaylistCount playlists!
   </p>
+  <input type="text" @bind="_searchQuery">
+  <button @onclick="AlbumSearch">Search!</button>
+  @foreach (var searchResult in @_search.Albums.Items)
+  {
+    <p>@searchResult.Name</p>
+    <img src ="@searchResult.Images[1].Url">
+  }
 }
 else
 {
@@ -36,6 +43,36 @@ else
   private int? _totalPlaylistCount;
 
   private Uri _authUri;
+
+  private SearchResponse _search;
+
+  private string _searchQuery = "hissing";
+
+  private async void AlbumSearch()
+  {
+    Console.WriteLine("button has been pressed.");
+    var uri = new Uri(navManager.Uri);
+    var maxLen = Math.Min(1, uri.Fragment.Length);
+    Dictionary<string, string> fragmentParams = uri.Fragment.Substring(maxLen)?
+      .Split("&", StringSplitOptions.RemoveEmptyEntries)?
+      .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
+      .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
+
+    Console.WriteLine(fragmentParams);
+
+    _isAuthed = fragmentParams.ContainsKey("access_token");
+    if (_isAuthed)
+    {
+      var spotify = new SpotifyClient(fragmentParams["access_token"]);
+
+      _me = await spotify.UserProfile.Current();
+      _totalPlaylistCount = (await spotify.Playlists.CurrentUsers()).Total;
+      _search = await spotify.Search.Item(new SearchRequest(
+          SearchRequest.Types.Album, _searchQuery
+      ));
+    }
+    StateHasChanged();
+  }
 
   protected override void OnInitialized()
   {
@@ -69,6 +106,9 @@ else
 
       _me = await spotify.UserProfile.Current();
       _totalPlaylistCount = (await spotify.Playlists.CurrentUsers()).Total;
+      _search = await spotify.Search.Item(new SearchRequest(
+          SearchRequest.Types.Album, _searchQuery
+      ));
     }
   }
 }

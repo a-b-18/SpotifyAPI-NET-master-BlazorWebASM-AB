@@ -104,7 +104,7 @@ using Microsoft.Extensions.Configuration;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 31 "C:\Users\alexb\source\repos\SpotifyAPI-NET-master\SpotifyAPI.Web.Examples\Example.BlazorWASM\Pages\Index.razor"
+#line 38 "C:\Users\alexb\source\repos\SpotifyAPI-NET-master\SpotifyAPI.Web.Examples\Example.BlazorWASM\Pages\Index.razor"
        
   private bool _isAuthed = false;
 
@@ -113,6 +113,36 @@ using Microsoft.Extensions.Configuration;
   private int? _totalPlaylistCount;
 
   private Uri _authUri;
+
+  private SearchResponse _search;
+
+  private string _searchQuery = "hissing";
+
+  private async void AlbumSearch()
+  {
+    Console.WriteLine("button has been pressed.");
+    var uri = new Uri(navManager.Uri);
+    var maxLen = Math.Min(1, uri.Fragment.Length);
+    Dictionary<string, string> fragmentParams = uri.Fragment.Substring(maxLen)?
+      .Split("&", StringSplitOptions.RemoveEmptyEntries)?
+      .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
+      .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
+
+    Console.WriteLine(fragmentParams);
+
+    _isAuthed = fragmentParams.ContainsKey("access_token");
+    if (_isAuthed)
+    {
+      var spotify = new SpotifyClient(fragmentParams["access_token"]);
+
+      _me = await spotify.UserProfile.Current();
+      _totalPlaylistCount = (await spotify.Playlists.CurrentUsers()).Total;
+      _search = await spotify.Search.Item(new SearchRequest(
+          SearchRequest.Types.Album, _searchQuery
+      ));
+    }
+    StateHasChanged();
+  }
 
   protected override void OnInitialized()
   {
@@ -146,6 +176,9 @@ using Microsoft.Extensions.Configuration;
 
       _me = await spotify.UserProfile.Current();
       _totalPlaylistCount = (await spotify.Playlists.CurrentUsers()).Total;
+      _search = await spotify.Search.Item(new SearchRequest(
+          SearchRequest.Types.Album, _searchQuery
+      ));
     }
   }
 
